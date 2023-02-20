@@ -14,14 +14,14 @@ function Modal({onClose,userInModal,setUsers,users}){
 
     }
     var closeClicked=false;
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const handleSubmit =(e)=>{
         e.preventDefault();
         
         if(!closeClicked){
             let afterEditUsers = users.map(user=>{
                 if(user.id === modalUser.id){
-                    if(modalUser.name !== '' && modalUser.email !== "" && modalUser.role !=='' && regex.test(modalUser.email))
+                    if(modalUser.name !== '' && modalUser.email !== "" && modalUser.role !=='' && validateEmail.test(modalUser.email))
                     user = modalUser
                 }
                 return user;
@@ -44,7 +44,7 @@ function Modal({onClose,userInModal,setUsers,users}){
                         <label className="mr-6">Email:</label>
                         <input value={modalUser.email} type="text" onChange={handleEmail} className="px-1 py-1 bg-white border border-slate-300 rounded-md"/>
                         {modalUser.email === '' && <p className="pl-16  text-red-500 text-sm">Email cannot be empty</p>}
-                        {!regex.test(modalUser.email) && modalUser.email !=='' && <p className="pl-16  text-red-500 text-sm">Enter valid email</p>}
+                        {!validateEmail.test(modalUser.email) && modalUser.email !=='' && <p className="pl-16  text-red-500 text-sm">Enter valid email</p>}
                     </div>
                     <div className="mt-3">
                         <label className="mr-8">Role:</label>
