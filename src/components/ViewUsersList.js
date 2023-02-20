@@ -21,7 +21,8 @@ function ViewUsersList(){
                 user.isActive = true;
                 return user;
             })
-            setUsers([...users])
+            // setUsers([...users])
+            setUsers(user=>user);
             setCheckMultipleUsers(false);
     },[currentPage])
     useEffect(()=>{
