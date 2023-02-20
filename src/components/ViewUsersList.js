@@ -19,6 +19,7 @@ function ViewUsersList(){
     useEffect(()=>{
             users.map((user)=>{
                 user.isActive = true;
+                return user;
             })
             setUsers([...users])
             setCheckMultipleUsers(false);
@@ -40,7 +41,6 @@ function ViewUsersList(){
     }
     const lastUserIndex = currentPage * usersPerPage;
     const firstUserIndex = lastUserIndex - usersPerPage;
-    const currentUsers = users.slice(firstUserIndex,lastUserIndex) ;
     const handleEditUser = (user)=>{
        setShowModal(true);
        setUserInModal(user)
@@ -53,7 +53,7 @@ function ViewUsersList(){
             setUsers([...users])
     }
     const handleDeleteSelectedUsers = () =>{
-        let afterDeleteUsers = users.filter((user)=>user.isActive==true)
+        let afterDeleteUsers = users.filter((user)=>user.isActive===true)
         setUsers(afterDeleteUsers);
         setCheckMultipleUsers(false);
         setCurrentPage(1);
@@ -62,12 +62,14 @@ function ViewUsersList(){
         if(checkMultipleUsers === false){
             users.filter(user=>user.name.startsWith(searchValue)  || user.email.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
                 user.isActive = false;
+                return user;
             })
             setUsers([...users])
         }
         else{
             users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
                 user.isActive= true;
+                return user;
             })
             setUsers([...users]);
         }

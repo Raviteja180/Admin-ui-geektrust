@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Modal({onClose,userInModal,setUsers,users}){
     const [modalUser,setUser] = useState(userInModal)
@@ -13,8 +13,13 @@ function Modal({onClose,userInModal,setUsers,users}){
         setUser({...modalUser,role:e.target.value})
 
     }
+    useEffect(()=>{
+        return ()=>{
+            console.log("unmouting the component");
+        }
+    },[users]);
     var closeClicked=false;
-    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const validateEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     const handleSubmit =(e)=>{
         e.preventDefault();
         
