@@ -21,10 +21,10 @@ function ViewUsersList(){
                 user.isActive = true;
                 return user;
             })
-            // setUsers([...users])
-            setUsers(user=>user);
+            setUsers([...users])
+            // setUsers(user=>user);
             setCheckMultipleUsers(false);
-    },[currentPage])
+    },[currentPage,users])
     useEffect(()=>{
         async function fetchData(){
             const response = await axios.get('https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json');
