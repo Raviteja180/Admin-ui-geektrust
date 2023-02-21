@@ -13,11 +13,11 @@ function Pagination({totalUsers,usersPerPage,setCurrentPage,currentPage}){
     })
     return (
         <>
-            <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(1)}>{'<<'} </button>
-            <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(currentPage -1)}> {'<'} </button>
+            {totalUsers.length>10 && currentPage!==1 && <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(1)}>{'<<'} </button>}
+            {totalUsers.length>10 && currentPage > 1 && pages.length>1 && <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(currentPage -1)}> {'<'} </button>}
             {noOfPages}
-            <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(currentPage+1)}>{'>'} </button>
-            <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(pages.length)}> {'>>'} </button>
+            {totalUsers.length>10 && currentPage !==pages.length && pages.length>1 && <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(currentPage+1)}>{'>'} </button>}
+            {totalUsers.length>10 && currentPage!==pages.length && <button className ="rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid" onClick={()=>setCurrentPage(pages.length)}> {'>>'} </button>}
         </>
     )
 }

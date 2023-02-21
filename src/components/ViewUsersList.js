@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
@@ -14,17 +14,9 @@ function ViewUsersList(){
     const [checkMultipleUsers,setCheckMultipleUsers] = useState(false);
     const [searchValue,setSearchValue] = useState('');
     const usersPerPage = 10;
-
-
-    useEffect(()=>{
-            users.map((user)=>{
-                user.isActive = true;
-                return user;
-            })
-            setUsers([...users])
-            // setUsers(user=>user);
-            setCheckMultipleUsers(false);
-    },[currentPage,users])
+    const prevCountRef = useRef();
+    prevCountRef.current = currentPage;
+    console.log(currentPage,prevCountRef.current);
     useEffect(()=>{
         async function fetchData(){
             const response = await axios.get('https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json');
@@ -36,6 +28,22 @@ function ViewUsersList(){
         };
         fetchData();    
     },[]);
+    useEffect(()=>{
+        
+            users.map((user)=>{
+                user.isActive = true;
+                return user;
+            })
+            setCheckMultipleUsers(false);
+    },[currentPage])
+    // useEffect(()=>{
+    //         users.map((user)=>{
+    //             user.isActive = true;
+    //             return user;
+    //         })
+    //         setCheckMultipleUsers(false);       
+    // },[currentPage])
+    
     const handleDeleteUser = (e,id)=>{
         let tusers =users.filter((user)=>user.id !== id)
         setUsers(tusers);
@@ -61,14 +69,14 @@ function ViewUsersList(){
     }
     const handleHeaderCheckbox =()=>{
         if(checkMultipleUsers === false){
-            users.filter(user=>user.name.startsWith(searchValue)  || user.email.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
+            users.filter(user=>user.name.startsWith(searchValue)  || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
                 user.isActive = false;
                 return user;
             })
             setUsers([...users])
         }
         else{
-            users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
+            users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user)=>{
                 user.isActive= true;
                 return user;
             })
@@ -80,9 +88,9 @@ function ViewUsersList(){
         setSearchValue(val);
         setCurrentPage(1);
     }
-    const renderUsers = users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user,index)=>{
+    const renderUsers = users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user,index)=>{
         return  (
-            <tr key={index}>
+            <tr key={index} className={(!user.isActive)?"":"" && "bg-slate-200"}>
                 <td className="w-1/5 text-center ">
                     <input type="checkbox"  checked={!user.isActive} onChange={(e)=>handleCheckbox(e,user)}/>
                 </td>
@@ -106,9 +114,11 @@ function ViewUsersList(){
     return (
         <div>
             <SearchUsers users={users} setUsers={setUsers} getSearchValue={getSearchValue}/>
-            <table className="table-fixed mt-5 mx-auto">
+            
+            <table className="table-fixed mt-5 mx-auto border-2 border-solid border-black">
                 <thead>
-                    <tr>    
+                {users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).length>0 && 
+                    <tr>   
                         <th className="w-1/5">
                             <input type="checkbox"  checked={checkMultipleUsers} onChange={handleHeaderCheckbox}/>
                         </th>
@@ -117,6 +127,7 @@ function ViewUsersList(){
                         <th className="w-1/5">Role</th>
                         <th className="w-1/5">Actions</th>
                     </tr>
+                }
                 </thead>
                 <tbody>
                     {renderUsers}
@@ -124,7 +135,7 @@ function ViewUsersList(){
             </table>
             <div className="mt-10">
                     <button className="bg-red-500 rounded text-white px-2 py-2 mx-20 mr-40" onClick={handleDeleteSelectedUsers}>Delete Selected Users</button>
-                    <Pagination totalUsers={users && users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue)) } usersPerPage={usersPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+                    <Pagination  totalUsers={users && users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)) } usersPerPage={usersPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
             </div>
             {showModal && <Modal onClose = {handleClose} userInModal={userInModal} setUsers={setUsers} users={users} />}
         </div>
