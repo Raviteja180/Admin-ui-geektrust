@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+input{
+    color:black
+}
 th,td{
     width:200px;
+    padding:4px;
+}
+table{
+    width:80%;
+}
+.tableData{
+    height:400px;
 }

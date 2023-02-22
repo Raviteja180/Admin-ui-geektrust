@@ -3,7 +3,7 @@ import ViewUsersList from "./components/ViewUsersList";
 
 function App(){
     return (
-        <div>
+        <div className="text-lg">
             <ViewUsersList />
         </div>
     )   

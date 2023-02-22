@@ -90,7 +90,7 @@ function ViewUsersList(){
     }
     const renderUsers = users.filter(user=>user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).slice(firstUserIndex,lastUserIndex).map((user,index)=>{
         return  (
-            <tr key={index} className={(!user.isActive)?"":"" && "bg-slate-200"}>
+            <tr key={index} className={(!user.isActive)?"bg-[#a5b1c2] text-black":""}>
                 <td className="w-1/5 text-center ">
                     <input type="checkbox"  checked={!user.isActive} onChange={(e)=>handleCheckbox(e,user)}/>
                 </td>
@@ -98,15 +98,17 @@ function ViewUsersList(){
                     {user.name}
                 </td>
                 <td className="w-1/5 text-center ">
-                    {user.email}
+                    {user.email.slice(0,25)} <br />
+                    {user.email.slice(25)}
+                    {/* {user.email} */}
                 </td>
                 <td className="w-1/5 text-center ">
                     {user.role}
                 </td>
-                <td className="w-100px flex justify-center ">
+                <td className="w-100px flex justify-center">
                     <FaRegEdit  className="mr-2" onClick={()=>handleEditUser(user)} />
                     <AiFillDelete  onClick={(e)=>handleDeleteUser(e,user.id)} />
-                </td>
+                </td>     
             </tr>            
         )
     })
@@ -115,25 +117,31 @@ function ViewUsersList(){
         <div>
             <SearchUsers users={users} setUsers={setUsers} getSearchValue={getSearchValue}/>
             
-            <table className="table-fixed mt-5 mx-auto border-2 border-solid border-black">
-                <thead>
-                {users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).length>0 && 
-                    <tr>   
-                        <th className="w-1/5">
-                            <input type="checkbox"  checked={checkMultipleUsers} onChange={handleHeaderCheckbox}/>
-                        </th>
-                        <th className="w-1/5">Name</th>
-                        <th className="w-1/5">Email</th>
-                        <th className="w-1/5">Role</th>
-                        <th className="w-1/5">Actions</th>
-                    </tr>
-                }
-                </thead>
-                <tbody>
-                    {renderUsers}
-                </tbody>
-            </table>
-            <div className="mt-10">
+
+            <div className="tableData">
+
+                <table className="table-fixed mt-5 mx-auto bg-[#FAD8B9] rounded-lg text-black">
+                    <thead>
+                    {users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)).length>0 && 
+                        <tr>   
+                            <th className="w-1/5">
+                                <input type="checkbox"  checked={checkMultipleUsers} onChange={handleHeaderCheckbox}/>
+                            </th>
+                            <th className="w-1/5">Name</th>
+                            <th className="w-1/5">Email</th>
+                            <th className="w-1/5">Role</th>
+                            <th className="w-1/5">Actions</th>
+                        </tr>
+                    }
+                    </thead>
+                    <tbody>
+                        {renderUsers}
+                    </tbody>
+                </table>
+            </div>
+
+            
+            <div className="mt-10 ml-20">
                     <button className="bg-red-500 rounded text-white px-2 py-2 mx-20 mr-40" onClick={handleDeleteSelectedUsers}>Delete Selected Users</button>
                     <Pagination  totalUsers={users && users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)) } usersPerPage={usersPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
             </div>

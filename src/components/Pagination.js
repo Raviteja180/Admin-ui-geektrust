@@ -6,7 +6,7 @@ function Pagination({totalUsers,usersPerPage,setCurrentPage,currentPage}){
         pages.push(i);
     }
     let noOfPages = pages.map((pageNo)=>{
-        let classes =  pageNo === currentPage ? className("rounded px-2 py-1 mx-1 border-blue-500 border-2 border-solid"):className("rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid");
+        let classes =  pageNo === currentPage ? className("rounded px-2 py-1 mx-1 border-black border-2 border-solid"):className("rounded px-2 py-1 mx-1 border-black-300 border-2 border-solid");
         return <button  className ={classes} key={pageNo} onClick={()=>setCurrentPage(pageNo)}>
                 {pageNo}
             </button>
