@@ -38,7 +38,7 @@ function Modal({onClose,userInModal,setUsers,users}){
     return (
         <div>
             <div className="fixed inset-0 bg-gray-100 opacity-50"></div>
-            <div className="flex justify-center pt-5 fixed inset-x-60 top-20 bottom-40 text-white rounded-md bg-[#485460] border-solid border-2">
+            <div className="flex justify-center pt-5 fixed inset-x-80 top-20 bottom-40 text-white rounded-md bg-[#485460] border-solid border-2">
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className="mr-5">Name:</label>
