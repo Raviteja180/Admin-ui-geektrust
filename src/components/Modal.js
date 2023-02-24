@@ -7,11 +7,9 @@ function Modal({onClose,userInModal,setUsers,users}){
     }
     const handleEmail = (e)=>{
         setUser({...modalUser,email:e.target.value})
-
     }
     const handleRole = (e)=>{
         setUser({...modalUser,role:e.target.value})
-
     }
     useEffect(()=>{
         return ()=>{
@@ -22,7 +20,6 @@ function Modal({onClose,userInModal,setUsers,users}){
     const validateEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     const handleSubmit =(e)=>{
         e.preventDefault();
-        
         if(!closeClicked){
             let afterEditUsers = users.map(user=>{
                 if(user.id === modalUser.id){

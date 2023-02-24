@@ -2,6 +2,7 @@ import { useEffect, useState,useRef } from "react";
 import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
+
 import SearchUsers from "./SearchUsers";
 import Pagination from "./Pagination";
 import Modal from "./Modal";
@@ -14,9 +15,6 @@ function ViewUsersList(){
     const [checkMultipleUsers,setCheckMultipleUsers] = useState(false);
     const [searchValue,setSearchValue] = useState('');
     const usersPerPage = 10;
-    const prevCountRef = useRef();
-    prevCountRef.current = currentPage;
-    console.log(currentPage,prevCountRef.current);
     useEffect(()=>{
         async function fetchData(){
             const response = await axios.get('https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json');
@@ -29,21 +27,12 @@ function ViewUsersList(){
         fetchData();    
     },[]);
     useEffect(()=>{
-        
-            users.map((user)=>{
-                user.isActive = true;
-                return user;
-            })
-            setCheckMultipleUsers(false);
-    },[currentPage])
-    // useEffect(()=>{
-    //         users.map((user)=>{
-    //             user.isActive = true;
-    //             return user;
-    //         })
-    //         setCheckMultipleUsers(false);       
-    // },[currentPage])
-    
+        users.map((user)=>{
+            user.isActive = true;
+            return user;
+        })
+        setCheckMultipleUsers(false);
+    },[currentPage])   
     const handleDeleteUser = (e,id)=>{
         let tusers =users.filter((user)=>user.id !== id)
         setUsers(tusers);
@@ -58,8 +47,8 @@ function ViewUsersList(){
         setShowModal(false)
     }
     const handleCheckbox = (e,user)=>{
-            user.isActive = !user.isActive;
-            setUsers([...users])
+        user.isActive = !user.isActive;
+        setUsers([...users])
     }
     const handleDeleteSelectedUsers = () =>{
         let afterDeleteUsers = users.filter((user)=>user.isActive===true)
@@ -100,7 +89,6 @@ function ViewUsersList(){
                 <td className="w-1/5 text-center ">
                     {user.email.slice(0,25)} <br />
                     {user.email.slice(25)}
-                    {/* {user.email} */}
                 </td>
                 <td className="w-1/5 text-center ">
                     {user.role}
@@ -112,12 +100,9 @@ function ViewUsersList(){
             </tr>            
         )
     })
-
     return (
         <div>
             <SearchUsers users={users} setUsers={setUsers} getSearchValue={getSearchValue}/>
-            
-
             <div className="tableData">
 
                 <table className="table-fixed mt-5 mx-auto bg-[#FAD8B9] rounded-lg text-black">
@@ -139,11 +124,9 @@ function ViewUsersList(){
                     </tbody>
                 </table>
             </div>
-
-            
             <div className="mt-10 ml-20">
-                    <button className="bg-red-500 rounded text-white px-2 py-2 mx-20 mr-40" onClick={handleDeleteSelectedUsers}>Delete Selected Users</button>
-                    <Pagination  totalUsers={users && users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)) } usersPerPage={usersPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+                <button className="bg-red-500 rounded text-white px-2 py-2 mx-20 mr-40" onClick={handleDeleteSelectedUsers}>Delete Selected Users</button>
+                <Pagination  totalUsers={users && users.filter(user => user.name.startsWith(searchValue) || user.email.startsWith(searchValue) || user.role.startsWith(searchValue)) } usersPerPage={usersPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
             </div>
             {showModal && <Modal onClose = {handleClose} userInModal={userInModal} setUsers={setUsers} users={users} />}
         </div>
